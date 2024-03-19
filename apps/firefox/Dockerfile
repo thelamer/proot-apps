@@ -1,6 +1,6 @@
 FROM alpine as rootfs
 
-ARG DOCKER_ENDPOINT=ghcr.io/thelamer/proot-apps:firefox
+ARG REPO
 
 # Install packages
 RUN \
@@ -12,9 +12,12 @@ RUN \
     pulseaudio && \
   echo "**** customize desktop file ****" && \
   sed -i \
-    -e "/Exec=/c Exec=/bin/sh -c \"\$HOME\/.local\/bin\/proot-apps run ${DOCKER_ENDPOINT}\"" \
+    -e "/Exec=/c Exec=/bin/sh -c \"\$HOME\/.local\/bin\/proot-apps run ghcr.io/${REPO}:firefox\"" \
     -e "s/Name=Firefox/Name=Firefox PA/g" \
     /usr/share/applications/firefox.desktop && \
+  mv \
+    /usr/share/applications/firefox.desktop \
+    /usr/share/applications/firefox-pa.desktop && \
   echo "**** cleanup ****" && \
   rm -rf \
     /tmp/*

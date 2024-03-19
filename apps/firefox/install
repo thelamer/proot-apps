@@ -9,11 +9,11 @@ cp \
 echo "Adding start menu entry"
 mkdir -p $HOME/.local/share/applications/
 cp \
-  /usr/share/applications/firefox.desktop \
+  /usr/share/applications/firefox-pa.desktop \
   $HOME/.local/share/applications/
 echo "Adding desktop shortcut"
 mkdir -p $HOME/Desktop
 cp \
-  /usr/share/applications/firefox.desktop \
+  /usr/share/applications/firefox-pa.desktop \
   $HOME/Desktop/
-chmod +x $HOME/Desktop/firefox.desktop
+chmod +x $HOME/Desktop/firefox-pa.desktop
