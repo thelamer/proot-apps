@@ -1,6 +1,6 @@
 FROM alpine as rootfs
 
-ARG DOCKER_ENDPOINT=taisun/random-images:firefox-proot
+ARG DOCKER_ENDPOINT=ghcr.io/thelamer/proot-apps:firefox
 
 # Install packages
 RUN \
