@@ -24,5 +24,4 @@ jobs:
             folder:
               - 'apps/firefox/**'
       - if: steps.changes.outputs.folder == 'true'
-        run: cd apps/firefox/
-        run: docker buildx build --push --platform linux/amd64,linux/arm64 --tag ghcr.io/${{ github.actor }}/proot-apps:firefox .
+        run: cd apps/firefox/ && docker buildx build --push --platform linux/amd64,linux/arm64 --tag ghcr.io/${{ github.actor }}/proot-apps:firefox .
