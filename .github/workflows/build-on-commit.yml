@@ -27,9 +27,9 @@ jobs:
         run: >
           cd apps/firefox/ && 
           docker buildx build --push
-            --platform linux/amd64,linux/arm64
-            --build-arg REPO=${GITHUB_REPOSITORY}
-            --tag ghcr.io/${GITHUB_REPOSITORY}:firefox .
+          --platform linux/amd64,linux/arm64
+          --build-arg REPO=${GITHUB_REPOSITORY}
+          --tag ghcr.io/${GITHUB_REPOSITORY}:firefox .
   chromium:
     runs-on: ubuntu-latest
     steps:
@@ -51,6 +51,6 @@ jobs:
         run: >
           cd apps/chromium/ &&
           docker buildx build --push
-            --platform linux/amd64,linux/arm64
-            --build-arg REPO=${GITHUB_REPOSITORY}
-            --tag ghcr.io/${GITHUB_REPOSITORY}:chromium .
+          --platform linux/amd64,linux/arm64
+          --build-arg REPO=${GITHUB_REPOSITORY}
+          --tag ghcr.io/${GITHUB_REPOSITORY}:chromium .
