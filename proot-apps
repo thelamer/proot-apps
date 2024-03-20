@@ -197,6 +197,11 @@ if [ "${TYPE}" == "install" ]; then
   if [ ! -d "$HOME/proot-apps/${IMAGE_FOLDER}" ]; then
     dl_layer ${IMAGE}
   fi
+  # Add bin wrapper if defined
+  if [ -f "$HOME/proot-apps/${IMAGE_FOLDER}/bin-name" ]; then
+    echo "\$HOME/.local/bin/proot-apps run ${IMAGE} \"\$@\"" > $HOME/.local/bin/$(cat $HOME/proot-apps/${IMAGE_FOLDER}/bin-name)
+    chmod +x $HOME/.local/bin/$(cat $HOME/proot-apps/${IMAGE_FOLDER}/bin-name)
+  fi
   $HOME/.local/bin/proot \
     -R $HOME/proot-apps/${IMAGE_FOLDER}/ \
     /install >/dev/null 2>&1
@@ -226,6 +231,10 @@ if [ "${TYPE}" == "remove" ]; then
       -R $HOME/proot-apps/${IMAGE_FOLDER}/ \
       /remove
   fi
+  # Remove bin wrapper if defined
+  if [ -f "$HOME/proot-apps/${IMAGE_FOLDER}/bin-name" ]; then
+    rm -f $HOME/.local/bin/$(cat $HOME/proot-apps/${IMAGE_FOLDER}/bin-name)
+  fi
   # Remove app layer
   echo "Removing app root"
   rm -Rf $HOME/proot-apps/${IMAGE_FOLDER}/
@@ -248,6 +257,10 @@ if [ "${TYPE}" == "uninstall" ]; then
     $HOME/.local/bin/proot \
       -R $HOME/proot-apps/${IMAGE_FOLDER}/ \
       /remove
+  fi
+  # Remove bin wrapper if defined
+  if [ -f "$HOME/proot-apps/${IMAGE_FOLDER}/bin-name" ]; then
+    rm -f $HOME/.local/bin/$(cat $HOME/proot-apps/${IMAGE_FOLDER}/bin-name)
   fi
 fi
 

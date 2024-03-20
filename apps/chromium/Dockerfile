@@ -18,6 +18,8 @@ RUN \
   mv \
     /usr/share/applications/chromium.desktop \
     /usr/share/applications/chromium-pa.desktop && \
+  echo "**** set bin name ****" && \
+  echo "chromium-pa" > /bin-name && \
   echo "**** cleanup ****" && \
   apt-get autoclean && \
   rm -rf \

@@ -18,6 +18,8 @@ RUN \
   mv \
     /usr/share/applications/firefox.desktop \
     /usr/share/applications/firefox-pa.desktop && \
+  echo "**** set bin name ****" && \
+  echo "firefox-pa" > /bin-name && \
   echo "**** cleanup ****" && \
   rm -rf \
     /tmp/*
