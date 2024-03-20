@@ -41,7 +41,7 @@ To install your first app [Firefox](https://www.mozilla.org/firefox/) simply exe
 proot-apps install firefox
 ```
 
-The files for Firefox will be install to a folder in `$HOME/proot-apps/`, Desktop and start menu shortcuts will also be created these names will not conflict with system installed packages.
+The files for Firefox will be installed to a folder in `$HOME/proot-apps/`, Desktop and start menu shortcuts will also be created these names will not conflict with system installed packages.
 
 These short named apps are available from the supported list below, but any app can be consumed from a Docker endpoint IE:
 

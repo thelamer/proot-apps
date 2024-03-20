@@ -182,7 +182,7 @@ if [ "${TYPE}" == "run" ]; then
   $HOME/.local/bin/proot \
     ${PULSE_BIND} \
     -R $HOME/proot-apps/${IMAGE_FOLDER}/ \
-    /entrypoint
+    /entrypoint "${@:3}"
 fi
 
 # Run installation

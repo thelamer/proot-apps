@@ -20,7 +20,7 @@ jobs:
       with:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref }}
-        body: Tagged Release
+        body_path: release-notes/current
         draft: false
         prerelease: false
     - run: bash ci-scripts/create-releases.sh
