@@ -11,7 +11,7 @@ RUN \
     font-noto && \
   echo "**** customize desktop file ****" && \
   sed -i \
-    -e "/Exec=/c Exec=/bin/sh -c \"\$HOME\/.local\/bin\/proot-apps run ghcr.io/${REPO}:gimp\"" \
+    -e "/^Exec=/c Exec=/bin/sh -c \"\$HOME\/.local\/bin\/proot-apps run ghcr.io/${REPO}:gimp\"" \
     -e "s/Name=GNU Image Manipulation Program/Name=GIMP PA/g" \
     /usr/share/applications/gimp.desktop && \
   mv \

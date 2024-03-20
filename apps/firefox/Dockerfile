@@ -12,7 +12,7 @@ RUN \
     pulseaudio && \
   echo "**** customize desktop file ****" && \
   sed -i \
-    -e "/Exec=/c Exec=/bin/sh -c \"\$HOME\/.local\/bin\/proot-apps run ghcr.io/${REPO}:firefox\"" \
+    -e "/^Exec=/c Exec=/bin/sh -c \"\$HOME\/.local\/bin\/proot-apps run ghcr.io/${REPO}:firefox\"" \
     -e "s/Name=Firefox/Name=Firefox PA/g" \
     /usr/share/applications/firefox.desktop && \
   mv \
