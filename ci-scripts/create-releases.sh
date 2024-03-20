@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 GH_USER=$(echo ${GITHUB_REPOSITORY} | awk -F'/' '{print $1}')
 GH_REPO=$(echo ${GITHUB_REPOSITORY} | awk -F'/' '{print $2}')
 
@@ -21,14 +23,14 @@ for ARCH in amd64 arm64; do
 
   # Compile proot
   cd ci-scripts
-  docker buildx build --platform linux/${ARCH} --tag build-${ARCH} -f Dockerfile.proot-builder .
+  docker buildx build --load --platform linux/${ARCH} --tag build-${ARCH} -f Dockerfile.proot-builder .
   cd ..
   docker run --rm -v $(pwd)/dist:/mnt build-${ARCH}
 
   # Create dist tarball
   UNAME_ARCH=$(echo $ARCH | sed -e 's/amd64/x86_64/g' -e 's/arm64/aarch64/g')
   cd dist/
-  chmod +x *
+  chmod +x * || :
   tar -czf proot-apps-${UNAME_ARCH}.tar.gz *
   mv proot-apps-${UNAME_ARCH}.tar.gz ../
   cd ..
