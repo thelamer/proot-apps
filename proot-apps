@@ -1,8 +1,8 @@
 #! /bin/bash
 
 TYPE=$1
-DEFAULT_GH_USER=thelamer
-DEFAULT_GH_REPO=proot-apps
+DEFAULT_GH_USER=REPLACE_USER
+DEFAULT_GH_REPO=REPLACE_REPO
 
 # Check for deps
 if [[ ! -f /usr/bin/curl ]]; then
