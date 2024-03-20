@@ -12,7 +12,7 @@ for IMAGE in $IMAGES; do
     -v /var/run/docker.sock:/var/run/docker.sock:ro \
     -v $(pwd):/tmp \
     ghcr.io/anchore/syft:latest \
-    $IMAGE -o table=/tmp/package_versions_check.txt
+    $IMAGE:latest -o table=/tmp/package_versions_check.txt
   if [ ! -f 'package_versions.txt' ]; then
     mv package_versions_check.txt package_versions.txt
   elif ! diff -q package_versions_check.txt package_versions.txt; then
@@ -20,6 +20,7 @@ for IMAGE in $IMAGES; do
   else
     rm -f package_versions_check.txt
   fi
+  docker rmi $IMAGE:latest
   cd ..
 done
 
