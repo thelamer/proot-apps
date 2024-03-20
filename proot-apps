@@ -201,6 +201,7 @@ if [ "${TYPE}" == "install" ]; then
   if [ -f "$HOME/proot-apps/${IMAGE_FOLDER}/bin-name" ]; then
     echo "\$HOME/.local/bin/proot-apps run ${IMAGE} \"\$@\"" > $HOME/.local/bin/$(cat $HOME/proot-apps/${IMAGE_FOLDER}/bin-name)
     chmod +x $HOME/.local/bin/$(cat $HOME/proot-apps/${IMAGE_FOLDER}/bin-name)
+    echo "$(cat $HOME/proot-apps/${IMAGE_FOLDER}/bin-name) is now available from the command line"
   fi
   $HOME/.local/bin/proot \
     -R $HOME/proot-apps/${IMAGE_FOLDER}/ \
