@@ -23,7 +23,7 @@ for ARCH in amd64 arm64; do
   cd ci-scripts
   docker buildx build --platform linux/${ARCH} --tag build-${ARCH} -f Dockerfile.proot-builder .
   cd ..
-  docker run --rm -it -v $(pwd)/dist:/mnt build-${ARCH}
+  docker run --rm -v $(pwd)/dist:/mnt build-${ARCH}
 
   # Create dist tarball
   UNAME_ARCH=$(echo $ARCH | sed -e 's/amd64/x86_64/g' -e 's/arm64/aarch64/g')
