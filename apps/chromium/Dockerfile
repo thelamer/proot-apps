@@ -14,6 +14,7 @@ RUN \
   sed -i \
     -e "/^Exec=/c Exec=/bin/sh -c \"\$HOME\/.local\/bin\/proot-apps run ghcr.io/${REPO}:chromium\"" \
     -e "s/Name=Chromium Web Browser/Name=Chromium PA/g" \
+    -e '/^TryExec=/d' \
     /usr/share/applications/chromium.desktop && \
   mv \
     /usr/share/applications/chromium.desktop \

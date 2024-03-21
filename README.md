@@ -63,10 +63,11 @@ proot-apps update firefox
 
 ## Supported Apps
 
-| Name | Full Endpoint | Description |
-| :----: | :----: |--- |
-| chromium | ghcr.io/thelamer/proot-apps:chromium | Chromium is an open-source browser project that aims to build a safer, faster, and more stable way for all users to experience the web. |
-| firefox | ghcr.io/thelamer/proot-apps:firefox | Firefox Browser, also known as Mozilla Firefox or simply Firefox, is a free and open-source web browser developed by the Mozilla Foundation and its subsidiary, the Mozilla Corporation. Firefox uses the Gecko layout engine to render web pages, which implements current and anticipated web standards.|
-| gimp | ghcr.io/thelamer/proot-apps:gimp | GIMP is a free and open-source raster graphics editor used for image manipulation (retouching) and image editing, free-form drawing, transcoding between different image file formats, and more specialized tasks. It is extensible by means of plugins, and scriptable.|
+| Name | Full Endpoint | Arch | Description |
+| :----: | :----: | :----: |--- |
+| chromium | ghcr.io/thelamer/proot-apps:chromium | amd64,arm64 |Chromium is an open-source browser project that aims to build a safer, faster, and more stable way for all users to experience the web. |
+| firefox | ghcr.io/thelamer/proot-apps:firefox | amd64,arm64 | Firefox Browser, also known as Mozilla Firefox or simply Firefox, is a free and open-source web browser developed by the Mozilla Foundation and its subsidiary, the Mozilla Corporation. Firefox uses the Gecko layout engine to render web pages, which implements current and anticipated web standards.|
+| gimp | ghcr.io/thelamer/proot-apps:gimp | amd64,arm64 | GIMP is a free and open-source raster graphics editor used for image manipulation (retouching) and image editing, free-form drawing, transcoding between different image file formats, and more specialized tasks. It is extensible by means of plugins, and scriptable.|
+| spotify | ghcr.io/thelamer/proot-apps:spotify | amd64 | Stream the tracks you love instantly, browse the charts or fire up readymade playlists in every genre and mood. Radio plays you great song after great song, based on your music taste. Discover new music too, with awesome playlists built just for you.|
 
 # For Developers

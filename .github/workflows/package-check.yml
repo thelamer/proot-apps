@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.PAT }}
-      - run: bash ci-script/update-packages.sh
+      - run: bash ci-scripts/update-packages.sh
       - run: |
           git config --global user.name 'Package Bot'
           git config --global user.email 'package-bot@users.noreply.github.com'
