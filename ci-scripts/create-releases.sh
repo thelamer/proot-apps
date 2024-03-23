@@ -20,6 +20,9 @@ for ARCH in amd64 arm64; do
   curl -L \
     -o dist/jq \
     https://github.com/jqlang/jq/releases/download/${JQ_RELEASE}/jq-linux-${ARCH}
+  curl -L \
+    -o dist/ncat \
+    https://github.com/${GH_USER}/${GH_REPO}/raw/bins/ncat/ncat-${ARCH}
 
   # Compile proot
   cd ci-scripts
