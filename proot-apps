@@ -149,6 +149,13 @@ function update_icon_cache() {
   fi
 }
 
+# Run a unix socket to relay commands to the host
+start_system_socket() {
+  $HOME/.local/bin/nc -k -U -l ${1}system.socket | bash &
+  BG_PIDS=$(jobs -p)
+  tail --pid=$2 -f /dev/null
+  kill -9 $BG_PIDS || :
+}
 
 #### Runtime ####
 
@@ -180,9 +187,10 @@ if [ "${TYPE}" == "run" ]; then
     PULSE_BIND="-b /var/run/pulse:/var/run/pulse"
   fi
   $HOME/.local/bin/proot \
-    ${PULSE_BIND} \
+    ${PULSE_BIND} -n \
     -R $HOME/proot-apps/${IMAGE_FOLDER}/ \
-    /entrypoint "${@:3}"
+    /entrypoint "${@:3}" &
+  start_system_socket "$HOME/proot-apps/${IMAGE_FOLDER}/" $!
 fi
 
 # Run installation

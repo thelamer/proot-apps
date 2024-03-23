@@ -10,6 +10,7 @@ RUN \
     ca-certificates \
     curl \
     fonts-noto \
+    netcat-openbsd \
     pulseaudio \
     wget && \
   DEB=$(curl -sL https://repository-origin.spotify.com/pool/non-free/s/spotify-client/ \
@@ -45,6 +46,7 @@ RUN \
 COPY ./entrypoint /entrypoint
 COPY ./install /install
 COPY ./remove /remove
+COPY /root /
 
 FROM scratch
 COPY --from=rootfs / /

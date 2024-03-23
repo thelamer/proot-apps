@@ -9,6 +9,7 @@ RUN \
   apt-get install -y --no-install-recommends \
     chromium \
     fonts-noto \
+    netcat-openbsd \
     pulseaudio && \
   echo "**** customize desktop file ****" && \
   sed -i \
@@ -32,6 +33,7 @@ RUN \
 COPY ./entrypoint /entrypoint
 COPY ./install /install
 COPY ./remove /remove
+COPY /root /
 
 FROM scratch
 COPY --from=rootfs / /

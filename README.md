@@ -12,7 +12,7 @@ PRoot Apps is a simple platform to install and use applications without any priv
 ## Install or update
 
 ```
-rm -f $HOME/.local/bin/{proot-apps,proot,jq}
+rm -f $HOME/.local/bin/{nc,proot-apps,proot,jq}
 mkdir -p $HOME/.local/bin
 curl -L https://github.com/thelamer/proot-apps/releases/download/$(curl -sX GET "https://api.github.com/repos/thelamer/proot-apps/releases/latest" | awk '/tag_name/{print $4;exit}' FS='[""]')/proot-apps-$(uname -m).tar.gz | tar -xzf - -C $HOME/.local/bin/
 export PATH="$HOME/.local/bin:$PATH"
@@ -29,7 +29,7 @@ echo 'export PATH="$HOME/.local/bin:$PATH"' >> $HOME/.bashrc
 ## Uninstall
 
 ```
-rm -f $HOME/.local/bin/{proot-apps,proot,jq}
+rm -f $HOME/.local/bin/{nc,proot-apps,proot,jq}
 rm -Rf $HOME/proot-apps/
 ```
 
