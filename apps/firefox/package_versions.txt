@@ -43,7 +43,7 @@ ffmpeg-libavcodec             6.1.1-r0               apk
 ffmpeg-libavutil              6.1.1-r0               apk           
 ffmpeg-libswresample          6.1.1-r0               apk           
 fftw-single-libs              3.3.10-r5              apk           
-firefox                       124.0-r0               apk           
+firefox                       124.0.1-r0             apk           
 font-noto                     23.7.1-r0              apk           
 font-noto-common              23.7.1-r0              apk           
 font-noto-math                23.7.1-r0              apk           
@@ -161,6 +161,7 @@ minimal-lexical               0.2.1                  rust-crate
 musl                          1.2.4_git20230717-r4   apk           
 musl-utils                    1.2.4_git20230717-r4   apk           
 ncurses-terminfo-base         6.4_p20231125-r0       apk           
+netcat-openbsd                1.226-r0               apk           
 nettle                        3.9.1-r0               apk           
 new_debug_unreachable         1.0.4                  rust-crate    
 nom                           7.1.3                  rust-crate    
