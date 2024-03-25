@@ -157,11 +157,135 @@ start_system_socket() {
   kill -9 $BG_PIDS || :
 }
 
+# Run update
+function update() {
+  IMAGE_FOLDER=$1
+  IMAGE=$(echo "${IMAGE_FOLDER}"| sed 's/\(.*\)_/\1:/' | sed 's|_|/|g')
+  if [ ! -d "$HOME/proot-apps/${IMAGE_FOLDER}/" ]; then
+    echo "${IMAGE} not present on system run install or get first"
+    exit 1
+  fi
+  LOCAL_SHA=$(cat "$HOME/proot-apps/${IMAGE_FOLDER}/SHALAYER")
+  # Check remote SHA
+  ARCH=$(uname -m| sed 's/x86_64/amd64/g'| sed 's/aarch64/arm64/')
+  UA="Mozilla/5.0 (Linux $(uname -m)) kasmweb.com"
+  registry_setup ${IMAGE}
+  SHALAYER=$(get_blob_sha "${TOKEN}" "${MANIFEST_URL}" "${TAG}" "${ARCH}")
+  if [[ "${SHALAYER}" == "${LOCAL_SHA}" ]]; then
+    echo "${IMAGE} is up to date: ${LOCAL_SHA}"
+  else
+    echo "Updating ${IMAGE_FOLDER}"
+    # Run remove logic
+    if [ -f "$HOME/proot-apps/${IMAGE_FOLDER}/remove" ]; then
+      $HOME/.local/bin/proot \
+        -R $HOME/proot-apps/${IMAGE_FOLDER}/ \
+        /remove
+    fi
+    # Remove app layer
+    echo "Removing app root"
+    rm -Rf $HOME/proot-apps/${IMAGE_FOLDER}/
+    dl_layer ${IMAGE}
+    $HOME/.local/bin/proot \
+      -R $HOME/proot-apps/${IMAGE_FOLDER}/ \
+      /install >/dev/null 2>&1
+    # Refresh icon cache
+    update_icon_cache
+    # Install
+    $HOME/.local/bin/proot \
+      -R $HOME/proot-apps/${IMAGE_FOLDER}/ \
+      /install
+  fi
+}
+
+# Run remove
+function remove() {
+  IMAGE_FOLDER=$1
+  IMAGE=$(echo "${IMAGE_FOLDER}"| sed 's/\(.*\)_/\1:/' | sed 's|_|/|g')
+  echo "Removing ${IMAGE}"
+  if [ ! -d "$HOME/proot-apps/${IMAGE_FOLDER}/" ]; then
+    echo "${IMAGE} not present on system run install or get first"
+    exit 1
+  fi
+  # Run remove logic
+  if [ -f "$HOME/proot-apps/${IMAGE_FOLDER}/remove" ]; then
+    $HOME/.local/bin/proot \
+      -R $HOME/proot-apps/${IMAGE_FOLDER}/ \
+      /remove
+  fi
+  # Remove bin wrapper if defined
+  if [ -f "$HOME/proot-apps/${IMAGE_FOLDER}/bin-name" ]; then
+    rm -f $HOME/.local/bin/$(cat $HOME/proot-apps/${IMAGE_FOLDER}/bin-name)
+  fi
+  # Remove app layer
+  echo "Removing app root"
+  rm -Rf $HOME/proot-apps/${IMAGE_FOLDER}/
+}
+
+# Run uninstall
+function uninstall() {
+  IMAGE_FOLDER=$1
+  IMAGE=$(echo "${IMAGE_FOLDER}"| sed 's/\(.*\)_/\1:/' | sed 's|_|/|g')
+  echo "Uninstalling ${IMAGE}"
+  if [ ! -d "$HOME/proot-apps/${IMAGE_FOLDER}/" ]; then
+    echo "${IMAGE} not present on system run install or get first"
+    exit 1
+  fi
+  # Run remove logic
+  if [ -f "$HOME/proot-apps/${IMAGE_FOLDER}/remove" ]; then
+    $HOME/.local/bin/proot \
+      -R $HOME/proot-apps/${IMAGE_FOLDER}/ \
+      /remove
+  fi
+  # Remove bin wrapper if defined
+  if [ -f "$HOME/proot-apps/${IMAGE_FOLDER}/bin-name" ]; then
+    rm -f $HOME/.local/bin/$(cat $HOME/proot-apps/${IMAGE_FOLDER}/bin-name)
+  fi
+}
+
+# Install
+function install_app() {
+  IMAGE=$1
+  IMAGE_FOLDER=$(echo "${IMAGE}"| sed 's|/|_|g'| sed 's|:|_|g')
+  echo "Installing ${IMAGE}"
+  # Download if not present
+  if [ ! -d "$HOME/proot-apps/${IMAGE_FOLDER}" ]; then
+    dl_layer ${IMAGE}
+  fi
+  # Add bin wrapper if defined
+  if [ -f "$HOME/proot-apps/${IMAGE_FOLDER}/bin-name" ]; then
+    echo "\$HOME/.local/bin/proot-apps run ${IMAGE} \"\$@\"" > $HOME/.local/bin/$(cat $HOME/proot-apps/${IMAGE_FOLDER}/bin-name)
+    chmod +x $HOME/.local/bin/$(cat $HOME/proot-apps/${IMAGE_FOLDER}/bin-name)
+    echo "$(cat $HOME/proot-apps/${IMAGE_FOLDER}/bin-name) is now available from the command line"
+  fi
+  $HOME/.local/bin/proot \
+    -R $HOME/proot-apps/${IMAGE_FOLDER}/ \
+    /install >/dev/null 2>&1
+  # Refresh icon cache
+  update_icon_cache
+  # Install
+  $HOME/.local/bin/proot \
+    -R $HOME/proot-apps/${IMAGE_FOLDER}/ \
+    /install
+}
+
+# Get
+function get_app() {
+  IMAGE=$1
+  IMAGE_FOLDER=$(echo "${IMAGE}"| sed 's|/|_|g'| sed 's|:|_|g')
+  echo "Getting ${IMAGE}"
+  # Download if not present
+  if [ ! -d "$HOME/proot-apps/${IMAGE_FOLDER}" ]; then
+    dl_layer ${IMAGE}
+  else
+   echo "${IMAGE} present on this system use update to update"
+  fi
+}
+
 #### Runtime ####
 
 # If a non docker endpoint is passed assume the default repo
 if [[ ! -z ${2+x} ]]; then
-  if [[ "${2}" != *"/"* ]] || [[ "${2}" != *":"* ]]; then
+  if ([[ "${2}" != *"/"* ]] || [[ "${2}" != *":"* ]]) && [[ "${2}" != "all" ]]; then
     IMAGE=ghcr.io/${DEFAULT_GH_USER}/${DEFAULT_GH_REPO}:${2}
   else
     IMAGE=${2}
@@ -200,26 +324,31 @@ if [ "${TYPE}" == "install" ]; then
     echo "Usage: proot-apps install myorg/myimage:tag"
     exit 1
   fi
-  IMAGE_FOLDER=$(echo "${IMAGE}"| sed 's|/|_|g'| sed 's|:|_|g')
-  # Download if not present
-  if [ ! -d "$HOME/proot-apps/${IMAGE_FOLDER}" ]; then
-    dl_layer ${IMAGE}
+  # Install multiple
+  if [[ ! -z ${3+x} ]]; then
+    for APP in "${@:2}"; do
+      if [[ "${APP}" != *"/"* ]] || [[ "${APP}" != *":"* ]]; then
+        install_app ghcr.io/${DEFAULT_GH_USER}/${DEFAULT_GH_REPO}:${APP}
+      else
+        install_app "${APP}"
+      fi
+      unset SHALAYER
+    done
+  # Install single or all
+  else
+    if [[ "${IMAGE}" != "all" ]]; then
+      install_app "${IMAGE}"
+    else
+      if [ -n "$(ls -A $HOME/proot-apps 2>/dev/null)" ]; then
+        for IMAGE_FOLDER in $(ls $HOME/proot-apps); do
+          IMAGE=$(echo "${IMAGE_FOLDER}"| sed 's/\(.*\)_/\1:/' | sed 's|_|/|g')
+          install_app "${IMAGE}"
+        done
+      else
+        echo "no apps to install"
+      fi
+    fi
   fi
-  # Add bin wrapper if defined
-  if [ -f "$HOME/proot-apps/${IMAGE_FOLDER}/bin-name" ]; then
-    echo "\$HOME/.local/bin/proot-apps run ${IMAGE} \"\$@\"" > $HOME/.local/bin/$(cat $HOME/proot-apps/${IMAGE_FOLDER}/bin-name)
-    chmod +x $HOME/.local/bin/$(cat $HOME/proot-apps/${IMAGE_FOLDER}/bin-name)
-    echo "$(cat $HOME/proot-apps/${IMAGE_FOLDER}/bin-name) is now available from the command line"
-  fi
-  $HOME/.local/bin/proot \
-    -R $HOME/proot-apps/${IMAGE_FOLDER}/ \
-    /install >/dev/null 2>&1
-  # Refresh icon cache
-  update_icon_cache
-  # Install
-  $HOME/.local/bin/proot \
-    -R $HOME/proot-apps/${IMAGE_FOLDER}/ \
-    /install
 fi
 
 # Run remove
@@ -229,24 +358,33 @@ if [ "${TYPE}" == "remove" ]; then
     echo "Usage: proot-apps remove myorg/myimage:tag"
     exit 1
   fi
-  IMAGE_FOLDER=$(echo "${IMAGE}"| sed 's|/|_|g'| sed 's|:|_|g')
-  if [ ! -d "$HOME/proot-apps/${IMAGE_FOLDER}/" ]; then
-    echo "${IMAGE} not present on system run install or get first"
-    exit 1
+  # Remove multiple
+  if [[ ! -z ${3+x} ]]; then
+    for APP in "${@:2}"; do
+      if [[ "${APP}" != *"/"* ]] || [[ "${APP}" != *":"* ]]; then
+        IMAGE=ghcr.io/${DEFAULT_GH_USER}/${DEFAULT_GH_REPO}:${APP}
+        IMAGE_FOLDER=$(echo "${IMAGE}"| sed 's|/|_|g'| sed 's|:|_|g')
+        remove "${IMAGE_FOLDER}"
+      else
+        IMAGE_FOLDER=$(echo "${APP}"| sed 's|/|_|g'| sed 's|:|_|g')
+        remove "${IMAGE_FOLDER}"
+      fi
+    done
+  # Uninstall single or all
+  else
+    if [[ "${IMAGE}" != "all" ]]; then
+      IMAGE_FOLDER=$(echo "${IMAGE}"| sed 's|/|_|g'| sed 's|:|_|g')
+      remove "${IMAGE_FOLDER}"
+    else
+      if [ -n "$(ls -A $HOME/proot-apps 2>/dev/null)" ]; then
+        for IMAGE_FOLDER in $(ls $HOME/proot-apps); do
+          remove "${IMAGE_FOLDER}"
+        done
+      else
+        echo "no apps to remove"
+      fi
+    fi
   fi
-  # Run remove logic
-  if [ -f "$HOME/proot-apps/${IMAGE_FOLDER}/remove" ]; then
-    $HOME/.local/bin/proot \
-      -R $HOME/proot-apps/${IMAGE_FOLDER}/ \
-      /remove
-  fi
-  # Remove bin wrapper if defined
-  if [ -f "$HOME/proot-apps/${IMAGE_FOLDER}/bin-name" ]; then
-    rm -f $HOME/.local/bin/$(cat $HOME/proot-apps/${IMAGE_FOLDER}/bin-name)
-  fi
-  # Remove app layer
-  echo "Removing app root"
-  rm -Rf $HOME/proot-apps/${IMAGE_FOLDER}/
 fi
 
 # Run uninstall
@@ -256,20 +394,32 @@ if [ "${TYPE}" == "uninstall" ]; then
     echo "Usage: proot-apps uninstall myorg/myimage:tag"
     exit 1
   fi
-  IMAGE_FOLDER=$(echo "${IMAGE}"| sed 's|/|_|g'| sed 's|:|_|g')
-  if [ ! -d "$HOME/proot-apps/${IMAGE_FOLDER}/" ]; then
-    echo "${IMAGE} not present on system run install or get first"
-    exit 1
-  fi
-  # Run remove logic
-  if [ -f "$HOME/proot-apps/${IMAGE_FOLDER}/remove" ]; then
-    $HOME/.local/bin/proot \
-      -R $HOME/proot-apps/${IMAGE_FOLDER}/ \
-      /remove
-  fi
-  # Remove bin wrapper if defined
-  if [ -f "$HOME/proot-apps/${IMAGE_FOLDER}/bin-name" ]; then
-    rm -f $HOME/.local/bin/$(cat $HOME/proot-apps/${IMAGE_FOLDER}/bin-name)
+  # Uninstall multiple
+  if [[ ! -z ${3+x} ]]; then
+    for APP in "${@:2}"; do
+      if [[ "${APP}" != *"/"* ]] || [[ "${APP}" != *":"* ]]; then 
+        IMAGE=ghcr.io/${DEFAULT_GH_USER}/${DEFAULT_GH_REPO}:${APP}
+        IMAGE_FOLDER=$(echo "${IMAGE}"| sed 's|/|_|g'| sed 's|:|_|g')
+        uninstall "${IMAGE_FOLDER}"
+      else
+        IMAGE_FOLDER=$(echo "${APP}"| sed 's|/|_|g'| sed 's|:|_|g')
+        uninstall "${IMAGE_FOLDER}"
+      fi
+    done
+  # Uninstall single or all
+  else
+    if [[ "${IMAGE}" != "all" ]]; then
+      IMAGE_FOLDER=$(echo "${IMAGE}"| sed 's|/|_|g'| sed 's|:|_|g')
+      uninstall "${IMAGE}"
+    else
+      if [ -n "$(ls -A $HOME/proot-apps 2>/dev/null)" ]; then
+        for IMAGE_FOLDER in $(ls $HOME/proot-apps); do
+          uninstall "${IMAGE_FOLDER}"
+        done
+      else
+        echo "no apps to uninstall"
+      fi
+    fi
   fi
 fi
 
@@ -280,49 +430,69 @@ if [ "${TYPE}" == "update" ]; then
     echo "Usage: proot-apps update myorg/myimage:tag"
     exit 1
   fi
-  IMAGE_FOLDER=$(echo "${IMAGE}"| sed 's|/|_|g'| sed 's|:|_|g')
-  if [ ! -d "$HOME/proot-apps/${IMAGE_FOLDER}/" ]; then
-    echo "${IMAGE} not present on system run install or get first"
+  # Update multiple
+  if [[ ! -z ${3+x} ]]; then
+    for APP in "${@:2}"; do
+      if [[ "${APP}" != *"/"* ]] || [[ "${APP}" != *":"* ]]; then
+        IMAGE=ghcr.io/${DEFAULT_GH_USER}/${DEFAULT_GH_REPO}:${APP}
+        IMAGE_FOLDER=$(echo "${IMAGE}"| sed 's|/|_|g'| sed 's|:|_|g')
+        update "${IMAGE_FOLDER}"
+      else
+        IMAGE_FOLDER=$(echo "${APP}"| sed 's|/|_|g'| sed 's|:|_|g')
+        update "${IMAGE_FOLDER}"
+      fi
+    done
+  # Update single or all
+  else
+    if [[ "${IMAGE}" != "all" ]]; then
+      IMAGE_FOLDER=$(echo "${IMAGE}"| sed 's|/|_|g'| sed 's|:|_|g')
+      update "${IMAGE}"
+    else
+      if [ -n "$(ls -A $HOME/proot-apps 2>/dev/null)" ]; then
+        for IMAGE_FOLDER in $(ls $HOME/proot-apps); do
+          update "${IMAGE_FOLDER}"
+        done
+      else
+        echo "no apps to update"
+      fi
+    fi
+  fi
+fi
+
+# Run get
+if [ "${TYPE}" == "get" ]; then
+  if [[ -z ${2+x} ]]; then
+    echo "The image is required"
+    echo "Usage: proot-apps get myorg/myimage:tag"
     exit 1
   fi
-  LOCAL_SHA=$(cat "$HOME/proot-apps/${IMAGE_FOLDER}/SHALAYER")
-  # Check remote SHA
-  ARCH=$(uname -m| sed 's/x86_64/amd64/g'| sed 's/aarch64/arm64/')
-  UA="Mozilla/5.0 (Linux $(uname -m)) kasmweb.com" 
-  registry_setup ${IMAGE}
-  SHALAYER=$(get_blob_sha "${TOKEN}" "${MANIFEST_URL}" "${TAG}" "${ARCH}")
-  if [[ "${SHALAYER}" == "${LOCAL_SHA}" ]]; then
-    echo "${IMAGE} is up to date: ${LOCAL_SHA}"
+  # Get multiple
+  if [[ ! -z ${3+x} ]]; then
+    for APP in "${@:2}"; do
+      if [[ "${APP}" != *"/"* ]] || [[ "${APP}" != *":"* ]]; then
+        IMAGE=ghcr.io/${DEFAULT_GH_USER}/${DEFAULT_GH_REPO}:${APP}
+        get_app "${IMAGE}"
+      else
+        get_app "${IMAGE}"
+      fi
+      unset SHALAYER
+    done
+  # Get single
   else
-    # Run remove logic
-    if [ -f "$HOME/proot-apps/${IMAGE_FOLDER}/remove" ]; then
-      $HOME/.local/bin/proot \
-        -R $HOME/proot-apps/${IMAGE_FOLDER}/ \
-        /remove
-    fi
-    # Remove app layer
-    echo "Removing app root"
-    rm -Rf $HOME/proot-apps/${IMAGE_FOLDER}/
-    dl_layer ${IMAGE}
-    $HOME/.local/bin/proot \
-      -R $HOME/proot-apps/${IMAGE_FOLDER}/ \
-      /install >/dev/null 2>&1
-    # Refresh icon cache
-    update_icon_cache
-    # Install
-    $HOME/.local/bin/proot \
-      -R $HOME/proot-apps/${IMAGE_FOLDER}/ \
-      /install
+    get_app "${IMAGE}"
   fi
 fi
 
 # Usage
 if [[ -z ${1+x} ]]; then
-  echo "Usage: proot-apps [type] [image_name]"
-  echo "Run: proot-apps run myorg/myimage:tag"
-  echo "Install: proot-apps install myorg/myimage:tag"
-  echo "Uninstall: proot-apps uninstall myorg/myimage:tag"
-  echo "Remove: proot-apps remove myorg/myimage:tag"
-  echo "Get: proot-apps get myorg/myimage:tag"
-  echo "Update: proot-apps update myorg/myimage:tag"
+  echo "+-----------------------------------------------------------+"
+  echo "| Usage:    | proot-apps [type] [image_name]                |"
+  echo "+-----------------------------------------------------------+"
+  echo "| Run       | proot-apps run myorg/myimage:tag              |"
+  echo "| Install   | proot-apps install [myorg/myimage:tag|all]    |"
+  echo "| Uninstall | proot-apps uninstall [myorg/myimage:tag|all]  |"
+  echo "| Remove    | proot-apps remove [myorg/myimage:tag|all]     |"
+  echo "| Get       | proot-apps get myorg/myimage:tag              |"
+  echo "| Update    | proot-apps update [myorg/myimage:tag|all]     |"
+  echo "+-----------------------------------------------------------+"
 fi
