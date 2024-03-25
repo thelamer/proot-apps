@@ -15,7 +15,7 @@ RUN \
   echo "**** customize desktop file ****" && \
   sed -i \
     -e "/^Exec=/c Exec=/bin/sh -c \"\$HOME\/.local\/bin\/proot-apps run ghcr.io/${REPO}:firefox-dev\"" \
-    -e "s/Name=Name=Firefox Developer Edition/Name=Firefox Dev PA/g" \
+    -e "s/Name=Firefox Developer Edition/Name=Firefox Dev PA/g" \
     -e '/^TryExec=/d' \
     /usr/share/applications/firefox-developer-edition.desktop && \
   mv \
