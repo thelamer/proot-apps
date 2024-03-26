@@ -410,7 +410,7 @@ if [ "${TYPE}" == "uninstall" ]; then
   else
     if [[ "${IMAGE}" != "all" ]]; then
       IMAGE_FOLDER=$(echo "${IMAGE}"| sed 's|/|_|g'| sed 's|:|_|g')
-      uninstall "${IMAGE}"
+      uninstall "${IMAGE_FOLDER}"
     else
       if [ -n "$(ls -A $HOME/proot-apps 2>/dev/null)" ]; then
         for IMAGE_FOLDER in $(ls $HOME/proot-apps); do
@@ -446,7 +446,7 @@ if [ "${TYPE}" == "update" ]; then
   else
     if [[ "${IMAGE}" != "all" ]]; then
       IMAGE_FOLDER=$(echo "${IMAGE}"| sed 's|/|_|g'| sed 's|:|_|g')
-      update "${IMAGE}"
+      update "${IMAGE_FOLDER}"
     else
       if [ -n "$(ls -A $HOME/proot-apps 2>/dev/null)" ]; then
         for IMAGE_FOLDER in $(ls $HOME/proot-apps); do
