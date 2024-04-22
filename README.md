@@ -14,7 +14,7 @@ PRoot Apps is a simple platform to install and use applications without any priv
 ```
 rm -f $HOME/.local/bin/{ncat,proot-apps,proot,jq}
 mkdir -p $HOME/.local/bin
-curl -L https://github.com/linuxserver/proot-apps/releases/download/$(curl -sX GET "https://api.github.com/repos/linuxserver/proot-apps/releases/latest" | awk '/tag_name/{print $4;exit}' FS='[""]')/proot-apps-$(uname -m).tar.gz | tar -xzf - -C $HOME/.local/bin/
+curl -L https://github.com/thelamer/proot-apps/releases/download/$(curl -sX GET "https://api.github.com/repos/thelamer/proot-apps/releases/latest" | awk '/tag_name/{print $4;exit}' FS='[""]')/proot-apps-$(uname -m).tar.gz | tar -xzf - -C $HOME/.local/bin/
 export PATH="$HOME/.local/bin:$PATH"
 ```
 
@@ -57,7 +57,7 @@ The files for Firefox will be installed to a folder in `$HOME/proot-apps/`, Desk
 These short named apps are available from the supported list below, but any app can be consumed from a Docker endpoint IE:
 
 ```
-proot-apps install ghcr.io/linuxserver/proot-apps:firefox
+proot-apps install ghcr.io/thelamer/proot-apps:firefox
 ```
 
 To remove the application:
@@ -76,67 +76,67 @@ proot-apps update firefox
 
 | Name | Full Endpoint | Arch | Description |
 | :----: | :----: | :----: |--- |
-| anydesk | ghcr.io/linuxserver/proot-apps:anydesk | linux/amd64 | AnyDesk ensures secure and reliable remote desktop connections for IT professionals and on-the-go individuals alike.|
-| ardour | ghcr.io/linuxserver/proot-apps:ardour | linux/amd64,linux/arm64 | Ardour is an open source, collaborative effort of a worldwide team including musicians, programmers, and professional recording engineers.|
-| audacity | ghcr.io/linuxserver/proot-apps:audacity | linux/amd64 | Audacity is an easy-to-use, multi-track audio editor and recorder. Developed by a group of volunteers as open source.|
-| beekeeperstudio | ghcr.io/linuxserver/proot-apps:beekeeperstudio | linux/amd64,linux/arm64 | Use Beekeeper Studio to query and manage your relational databases, like MySQL, Postgres, SQLite, and SQL Server.|
-| bitwarden | ghcr.io/linuxserver/proot-apps:bitwarden | linux/amd64 | Bitwarden is a secure and free password manager for all of your devices.|
-| blender | ghcr.io/linuxserver/proot-apps:blender | linux/amd64,linux/arm64 | Blender is a free and open-source 3D computer graphics software toolset used for creating animated films, visual effects, art, 3D printed models, motion graphics, interactive 3D applications, virtual reality, and computer games.|
-| brave | ghcr.io/linuxserver/proot-apps:brave | linux/amd64,linux/arm64 | Brave is a free and open-source web browser developed by Brave Software, Inc. based on the Chromium web browser. Brave is a privacy-focused browser, which automatically blocks most advertisements and website trackers in its default settings.|
-| calibre | ghcr.io/linuxserver/proot-apps:calibre | linux/amd64,linux/arm64 | Calibre is a powerful and easy to use e-book manager. Users say it's outstanding and a must-have. It'll allow you to do nearly everything and it takes things a step beyond normal e-book software. It's also completely free and open source and great for both casual users and computer experts.|
-| chrome | ghcr.io/linuxserver/proot-apps:chrome | linux/amd64 | Chrome is the official web browser from Google, built to be fast, secure, and customizable.|
-| chromium | ghcr.io/linuxserver/proot-apps:chromium | linux/amd64,linux/arm64 | Chromium is an open-source browser project that aims to build a safer, faster, and more stable way for all users to experience the web.|
-| deluge | ghcr.io/linuxserver/proot-apps:deluge | linux/amd64,linux/arm64 | Deluge is a lightweight, Free Software, cross-platform BitTorrent client.|
-| digikam | ghcr.io/linuxserver/proot-apps:digikam | linux/amd64,linux/arm64 | Professional Photo Management with the Power of Open Source.|
-| doublecmd | ghcr.io/linuxserver/proot-apps:doublecmd | linux/amd64,linux/arm64 | Double Commander is a free cross-platform open source file manager with two panels side by side (or one above the other). It is inspired by Total Commander and features some innovative new ideas.|
-| earth | ghcr.io/linuxserver/proot-apps:earth | linux/amd64 | Google Earth Pro on desktop is free for users with advanced feature needs. Import and export GIS data, and go back in time with historical imagery.|
-| eclipsejava | ghcr.io/linuxserver/proot-apps:eclipsejava | linux/amd64,linux/arm64 | Eclipse IDE, the essential tools for any Java developer, including a Java IDE, a Git client, XML Editor, Maven and Gradle integration.|
-| filezilla | ghcr.io/linuxserver/proot-apps:filezilla | linux/amd64,linux/arm64 | FileZilla Client is a fast and reliable cross-platform FTP, FTPS and SFTP client with lots of useful features and an intuitive graphical user interface.|
-| firefox | ghcr.io/linuxserver/proot-apps:firefox | linux/amd64,linux/arm64 | Firefox Browser, also known as Mozilla Firefox or simply Firefox, is a free and open-source web browser developed by the Mozilla Foundation and its subsidiary, the Mozilla Corporation. Firefox uses the Gecko layout engine to render web pages, which implements current and anticipated web standards.|
-| firefox-dev | ghcr.io/linuxserver/proot-apps:firefox-dev | linux/amd64,linux/arm64 | The browser made for developers, all the latest developer tools in beta in addition to features like the Multi-line Console Editor and WebSocket Inspector. A separate profile and path so you can easily run it alongside Release or Beta Firefox. Preferences tailored for web developers: Browser and remote debugging are enabled by default, as are the dark theme and developer toolbar button.|
-| freetube | ghcr.io/linuxserver/proot-apps:freetube | linux/amd64,linux/arm64 | FreeTube is an open source desktop YouTube player built with privacy in mind.|
-| gimp | ghcr.io/linuxserver/proot-apps:gimp | linux/amd64,linux/arm64 | GIMP is a free and open-source raster graphics editor used for image manipulation (retouching) and image editing, free-form drawing, transcoding between different image file formats, and more specialized tasks. It is extensible by means of plugins, and scriptable.|
-| handbrake | ghcr.io/linuxserver/proot-apps:handbrake | linux/amd64,linux/arm64 | HandBrake is an open-source, GPL-licensed, multiplatform, multithreaded video transcoder.|
-| idea | ghcr.io/linuxserver/proot-apps:idea | linux/amd64,linux/arm64 | IntelliJ IDEA Community Edition is an Integrated Development Environment (IDE) for Java and Kotlin designed to maximize developer productivity.|
-| inkscape | ghcr.io/linuxserver/proot-apps:inkscape | linux/amd64,linux/arm64 | Inkscape is professional quality vector graphics software which runs on Linux, Mac OS X and Windows desktop computers.|
-| kdenlive | ghcr.io/linuxserver/proot-apps:kdenlive | linux/amd64,linux/arm64 | Kdenlive is a powerful free and open source cross-platform video editing program made by the KDE community. Feature rich and production ready.|
-| keepassxc | ghcr.io/linuxserver/proot-apps:keepassxc | linux/amd64,linux/arm64 | KeePassXC is a modern, secure, and open-source password manager that stores and manages your most sensitive information.|
-| kicad | ghcr.io/linuxserver/proot-apps:kicad | linux/amd64,linux/arm64 | KiCad - A Cross Platform and Open Source Electronics Design Automation Suite.|
-| kodi | ghcr.io/linuxserver/proot-apps:kodi | linux/amd64,linux/arm64 | Kodi spawned from the love of media. It is media center and entertainment hub that brings all your digital media together into a beautiful and user friendly package. It is 100% free and open source, very customisable and runs on a wide variety of devices. It is supported by a dedicated team of volunteers and a huge community.|
-| krita | ghcr.io/linuxserver/proot-apps:krita | linux/amd64,linux/arm64 | Krita is a professional FREE and open source painting program. It is made by artists that want to see affordable art tools for everyone.|
-| ktorrent | ghcr.io/linuxserver/proot-apps:ktorrent | linux/amd64,linux/arm64 | KTorrent is a BitTorrent application by KDE which allows you to download files using the BitTorrent protocol.|
-| libreoffice | ghcr.io/linuxserver/proot-apps:libreoffice | linux/amd64,linux/arm64 | LibreOffice is a free and powerful office suite, and a successor to OpenOffice.org (commonly known as OpenOffice). Its clean interface and feature-rich tools help you unleash your creativity and enhance your productivity.|
-| librewolf | ghcr.io/linuxserver/proot-apps:librewolf | linux/amd64,linux/arm64 | This project is an independent fork of Firefox, with the primary goals of privacy security and user freedom. It is the community run successor to LibreFox.|
-| lmms | ghcr.io/linuxserver/proot-apps:lmms | linux/amd64,linux/arm64 | LMMS is a free, open source, multiplatform digital audio workstation.|
-| lollypop | ghcr.io/linuxserver/proot-apps:lollypop | linux/amd64,linux/arm64 | Lollypop is a lightweight modern music player designed to work excellently on the GNOME desktop environment.|
-| moonlight | ghcr.io/linuxserver/proot-apps:moonlight | linux/amd64,linux/arm64 | Moonlight allows you to play your PC games on almost any device, whether you're in another room or miles away from your gaming rig.|
-| mumble | ghcr.io/linuxserver/proot-apps:mumble | linux/amd64,linux/arm64 | Mumble is a free, open source, low latency, high quality voice chat application.|
-| nextcloud | ghcr.io/linuxserver/proot-apps:nextcloud | linux/amd64 | The Nextcloud desktop client keeps photos and documents always up to date, enabling you to work like you always did.|
-| obs | ghcr.io/linuxserver/proot-apps:obs | linux/amd64 | OBS Studio is a free and open-source, cross-platform screencasting and streaming app.|
-| obsidian | ghcr.io/linuxserver/proot-apps:obsidian | linux/amd64 | Obsidian is a note-taking app that lets you create, link, and organize your notes on your device, with hundreds of plugins and themes to customize your workflow.|
-| onlyoffice | ghcr.io/linuxserver/proot-apps:onlyoffice | linux/amd64 | Create, view and edit documents of any size and complexity. Work with most popular formats: DOCX, ODT, XLSX, ODS, CSV, PPTX, ODP, etc. Deal with multiple files within one and the same window thanks to the tab-based user interface.|
-| opera | ghcr.io/linuxserver/proot-apps:opera | linux/amd64 | Opera is a multi-platform web browser developed by its namesake company Opera. The browser is based on Chromium, but distinguishes itself from other Chromium-based browsers (Chrome, Edge, etc.) through its user interface and other features.|
-| parsec | ghcr.io/linuxserver/proot-apps:parsec | linux/amd64 | Parsec is a remote desktop you'll actually love. Connect to work, games, or projects wherever you are, whenever you want.|
-| postman | ghcr.io/linuxserver/proot-apps:postman | linux/amd64,linux/arm64 | Postman is an application that allows the testing of web APIs.|
-| pycharm | ghcr.io/linuxserver/proot-apps:pycharm | linux/amd64,linux/arm64 | PyCharm Community Edition IDE is designed by programmers, for programmers, to provide all the tools you need for productive Python development.|
-| qbittorrent | ghcr.io/linuxserver/proot-apps:qbittorrent | linux/amd64,linux/arm64 | The Qbittorrent project aims to provide an open-source software alternative to µTorrent. qBittorrent is based on the Qt toolkit and libtorrent-rasterbar library.|
-| remmina | ghcr.io/linuxserver/proot-apps:remmina | linux/amd64,linux/arm64 | Remmina is a remote desktop client written in GTK, aiming to be useful for system administrators and travellers, who need to work with lots of remote computers in front of either large or tiny screens. Remmina supports multiple network protocols, in an integrated and consistent user interface.|
-| retroarch | ghcr.io/linuxserver/proot-apps:retroarch | linux/amd64,linux/arm64 | RetroArch is a free and open-source, cross-platform frontend for emulators, game engines, video games, media players and other applications.|
-| shortwave | ghcr.io/linuxserver/proot-apps:shortwave | linux/amd64,linux/arm64 | Shortwave is an internet radio player that provides access to a station database with over 30,000 stations.|
-| shotcut | ghcr.io/linuxserver/proot-apps:shotcut | linux/amd64,linux/arm64 | Shotcut is a free, open source, cross-platform video editor.|
-| sqlitebrowser | ghcr.io/linuxserver/proot-apps:sqlitebrowser | linux/amd64,linux/arm64 | DB Browser for SQLite is a high quality, visual, open source tool to create, design, and edit database files compatible with SQLite.|
-| telegram | ghcr.io/linuxserver/proot-apps:telegram | linux/amd64,linux/arm64 | Telegram is a cloud-based mobile and desktop messaging app with a focus on security and speed.|
-| thunderbird | ghcr.io/linuxserver/proot-apps:thunderbird | linux/amd64,linux/arm64 | Thunderbird is free and open-source email client software which also functions as a full personal information manager with a calendar and contactbook, as well as an RSS feed reader, chat client (IRC/XMPP/Matrix), and news client.|
-| torbrowser | ghcr.io/linuxserver/proot-apps:torbrowser | linux/amd64 | Tor is free and open-source software for enabling anonymous communication by directing Internet traffic through a free, worldwide, volunteer overlay network.|
-| vivaldi | ghcr.io/linuxserver/proot-apps:vivaldi | linux/amd64,linux/arm64 | Vivaldi is a freeware, cross-platform web browser with a built-in email client developed by Vivaldi Technologies.|
-| vlc | ghcr.io/linuxserver/proot-apps:vlc | linux/amd64,linux/arm64 | VLC media player (previously the VideoLAN Client and commonly known as simply VLC) is a free and open-source, portable, cross-platform media player software and streaming media server developed by the VideoLAN project.|
-| vscode | ghcr.io/linuxserver/proot-apps:vscode | linux/amd64,linux/arm64 | Visual Studio Code is a source-code editor developed by Microsoft for Windows, Linux and macOS|
-| vscodium | ghcr.io/linuxserver/proot-apps:vscodium | linux/amd64,linux/arm64 | VSCodium is a community-driven, freely-licensed binary distribution of Microsoft’s editor VS Code.|
-| weather | ghcr.io/linuxserver/proot-apps:weather | linux/amd64,linux/arm64 | A small application that allows you to monitor the current weather conditions for your city, or anywhere in the world.|
-| webcord | ghcr.io/linuxserver/proot-apps:webcord | linux/amd64,linux/arm64 | WebCord can be summarized as a pack of security and privacy hardenings, Discord features reimplementations, Electron / Chromium / Discord bugs workarounds, stylesheets, internal pages and wrapped https://discord.com page, designed to conform with ToS as much as it is possible.|
-| yandex | ghcr.io/linuxserver/proot-apps:yandex | linux/amd64 | Yandex Browser is a freeware web browser developed by the Russian technology corporation Yandex that uses the Blink web browser.|
-| zoom | ghcr.io/linuxserver/proot-apps:zoom | linux/amd64 | Zoom is a proprietary videotelephony software program developed by Zoom Video Communications.|
-| zotero | ghcr.io/linuxserver/proot-apps:zotero | linux/amd64 | Zotero is a free, easy-to-use tool to help you collect, organize, annotate, cite, and share research.|
+| anydesk | ghcr.io/thelamer/proot-apps:anydesk | linux/amd64 | AnyDesk ensures secure and reliable remote desktop connections for IT professionals and on-the-go individuals alike.|
+| ardour | ghcr.io/thelamer/proot-apps:ardour | linux/amd64,linux/arm64 | Ardour is an open source, collaborative effort of a worldwide team including musicians, programmers, and professional recording engineers.|
+| audacity | ghcr.io/thelamer/proot-apps:audacity | linux/amd64 | Audacity is an easy-to-use, multi-track audio editor and recorder. Developed by a group of volunteers as open source.|
+| beekeeperstudio | ghcr.io/thelamer/proot-apps:beekeeperstudio | linux/amd64,linux/arm64 | Use Beekeeper Studio to query and manage your relational databases, like MySQL, Postgres, SQLite, and SQL Server.|
+| bitwarden | ghcr.io/thelamer/proot-apps:bitwarden | linux/amd64 | Bitwarden is a secure and free password manager for all of your devices.|
+| blender | ghcr.io/thelamer/proot-apps:blender | linux/amd64,linux/arm64 | Blender is a free and open-source 3D computer graphics software toolset used for creating animated films, visual effects, art, 3D printed models, motion graphics, interactive 3D applications, virtual reality, and computer games.|
+| brave | ghcr.io/thelamer/proot-apps:brave | linux/amd64,linux/arm64 | Brave is a free and open-source web browser developed by Brave Software, Inc. based on the Chromium web browser. Brave is a privacy-focused browser, which automatically blocks most advertisements and website trackers in its default settings.|
+| calibre | ghcr.io/thelamer/proot-apps:calibre | linux/amd64,linux/arm64 | Calibre is a powerful and easy to use e-book manager. Users say it's outstanding and a must-have. It'll allow you to do nearly everything and it takes things a step beyond normal e-book software. It's also completely free and open source and great for both casual users and computer experts.|
+| chrome | ghcr.io/thelamer/proot-apps:chrome | linux/amd64 | Chrome is the official web browser from Google, built to be fast, secure, and customizable.|
+| chromium | ghcr.io/thelamer/proot-apps:chromium | linux/amd64,linux/arm64 | Chromium is an open-source browser project that aims to build a safer, faster, and more stable way for all users to experience the web.|
+| deluge | ghcr.io/thelamer/proot-apps:deluge | linux/amd64,linux/arm64 | Deluge is a lightweight, Free Software, cross-platform BitTorrent client.|
+| digikam | ghcr.io/thelamer/proot-apps:digikam | linux/amd64,linux/arm64 | Professional Photo Management with the Power of Open Source.|
+| doublecmd | ghcr.io/thelamer/proot-apps:doublecmd | linux/amd64,linux/arm64 | Double Commander is a free cross-platform open source file manager with two panels side by side (or one above the other). It is inspired by Total Commander and features some innovative new ideas.|
+| earth | ghcr.io/thelamer/proot-apps:earth | linux/amd64 | Google Earth Pro on desktop is free for users with advanced feature needs. Import and export GIS data, and go back in time with historical imagery.|
+| eclipsejava | ghcr.io/thelamer/proot-apps:eclipsejava | linux/amd64,linux/arm64 | Eclipse IDE, the essential tools for any Java developer, including a Java IDE, a Git client, XML Editor, Maven and Gradle integration.|
+| filezilla | ghcr.io/thelamer/proot-apps:filezilla | linux/amd64,linux/arm64 | FileZilla Client is a fast and reliable cross-platform FTP, FTPS and SFTP client with lots of useful features and an intuitive graphical user interface.|
+| firefox | ghcr.io/thelamer/proot-apps:firefox | linux/amd64,linux/arm64 | Firefox Browser, also known as Mozilla Firefox or simply Firefox, is a free and open-source web browser developed by the Mozilla Foundation and its subsidiary, the Mozilla Corporation. Firefox uses the Gecko layout engine to render web pages, which implements current and anticipated web standards.|
+| firefox-dev | ghcr.io/thelamer/proot-apps:firefox-dev | linux/amd64,linux/arm64 | The browser made for developers, all the latest developer tools in beta in addition to features like the Multi-line Console Editor and WebSocket Inspector. A separate profile and path so you can easily run it alongside Release or Beta Firefox. Preferences tailored for web developers: Browser and remote debugging are enabled by default, as are the dark theme and developer toolbar button.|
+| freetube | ghcr.io/thelamer/proot-apps:freetube | linux/amd64,linux/arm64 | FreeTube is an open source desktop YouTube player built with privacy in mind.|
+| gimp | ghcr.io/thelamer/proot-apps:gimp | linux/amd64,linux/arm64 | GIMP is a free and open-source raster graphics editor used for image manipulation (retouching) and image editing, free-form drawing, transcoding between different image file formats, and more specialized tasks. It is extensible by means of plugins, and scriptable.|
+| handbrake | ghcr.io/thelamer/proot-apps:handbrake | linux/amd64,linux/arm64 | HandBrake is an open-source, GPL-licensed, multiplatform, multithreaded video transcoder.|
+| idea | ghcr.io/thelamer/proot-apps:idea | linux/amd64,linux/arm64 | IntelliJ IDEA Community Edition is an Integrated Development Environment (IDE) for Java and Kotlin designed to maximize developer productivity.|
+| inkscape | ghcr.io/thelamer/proot-apps:inkscape | linux/amd64,linux/arm64 | Inkscape is professional quality vector graphics software which runs on Linux, Mac OS X and Windows desktop computers.|
+| kdenlive | ghcr.io/thelamer/proot-apps:kdenlive | linux/amd64,linux/arm64 | Kdenlive is a powerful free and open source cross-platform video editing program made by the KDE community. Feature rich and production ready.|
+| keepassxc | ghcr.io/thelamer/proot-apps:keepassxc | linux/amd64,linux/arm64 | KeePassXC is a modern, secure, and open-source password manager that stores and manages your most sensitive information.|
+| kicad | ghcr.io/thelamer/proot-apps:kicad | linux/amd64,linux/arm64 | KiCad - A Cross Platform and Open Source Electronics Design Automation Suite.|
+| kodi | ghcr.io/thelamer/proot-apps:kodi | linux/amd64,linux/arm64 | Kodi spawned from the love of media. It is media center and entertainment hub that brings all your digital media together into a beautiful and user friendly package. It is 100% free and open source, very customisable and runs on a wide variety of devices. It is supported by a dedicated team of volunteers and a huge community.|
+| krita | ghcr.io/thelamer/proot-apps:krita | linux/amd64,linux/arm64 | Krita is a professional FREE and open source painting program. It is made by artists that want to see affordable art tools for everyone.|
+| ktorrent | ghcr.io/thelamer/proot-apps:ktorrent | linux/amd64,linux/arm64 | KTorrent is a BitTorrent application by KDE which allows you to download files using the BitTorrent protocol.|
+| libreoffice | ghcr.io/thelamer/proot-apps:libreoffice | linux/amd64,linux/arm64 | LibreOffice is a free and powerful office suite, and a successor to OpenOffice.org (commonly known as OpenOffice). Its clean interface and feature-rich tools help you unleash your creativity and enhance your productivity.|
+| librewolf | ghcr.io/thelamer/proot-apps:librewolf | linux/amd64,linux/arm64 | This project is an independent fork of Firefox, with the primary goals of privacy security and user freedom. It is the community run successor to LibreFox.|
+| lmms | ghcr.io/thelamer/proot-apps:lmms | linux/amd64,linux/arm64 | LMMS is a free, open source, multiplatform digital audio workstation.|
+| lollypop | ghcr.io/thelamer/proot-apps:lollypop | linux/amd64,linux/arm64 | Lollypop is a lightweight modern music player designed to work excellently on the GNOME desktop environment.|
+| moonlight | ghcr.io/thelamer/proot-apps:moonlight | linux/amd64,linux/arm64 | Moonlight allows you to play your PC games on almost any device, whether you're in another room or miles away from your gaming rig.|
+| mumble | ghcr.io/thelamer/proot-apps:mumble | linux/amd64,linux/arm64 | Mumble is a free, open source, low latency, high quality voice chat application.|
+| nextcloud | ghcr.io/thelamer/proot-apps:nextcloud | linux/amd64 | The Nextcloud desktop client keeps photos and documents always up to date, enabling you to work like you always did.|
+| obs | ghcr.io/thelamer/proot-apps:obs | linux/amd64 | OBS Studio is a free and open-source, cross-platform screencasting and streaming app.|
+| obsidian | ghcr.io/thelamer/proot-apps:obsidian | linux/amd64 | Obsidian is a note-taking app that lets you create, link, and organize your notes on your device, with hundreds of plugins and themes to customize your workflow.|
+| onlyoffice | ghcr.io/thelamer/proot-apps:onlyoffice | linux/amd64 | Create, view and edit documents of any size and complexity. Work with most popular formats: DOCX, ODT, XLSX, ODS, CSV, PPTX, ODP, etc. Deal with multiple files within one and the same window thanks to the tab-based user interface.|
+| opera | ghcr.io/thelamer/proot-apps:opera | linux/amd64 | Opera is a multi-platform web browser developed by its namesake company Opera. The browser is based on Chromium, but distinguishes itself from other Chromium-based browsers (Chrome, Edge, etc.) through its user interface and other features.|
+| parsec | ghcr.io/thelamer/proot-apps:parsec | linux/amd64 | Parsec is a remote desktop you'll actually love. Connect to work, games, or projects wherever you are, whenever you want.|
+| postman | ghcr.io/thelamer/proot-apps:postman | linux/amd64,linux/arm64 | Postman is an application that allows the testing of web APIs.|
+| pycharm | ghcr.io/thelamer/proot-apps:pycharm | linux/amd64,linux/arm64 | PyCharm Community Edition IDE is designed by programmers, for programmers, to provide all the tools you need for productive Python development.|
+| qbittorrent | ghcr.io/thelamer/proot-apps:qbittorrent | linux/amd64,linux/arm64 | The Qbittorrent project aims to provide an open-source software alternative to µTorrent. qBittorrent is based on the Qt toolkit and libtorrent-rasterbar library.|
+| remmina | ghcr.io/thelamer/proot-apps:remmina | linux/amd64,linux/arm64 | Remmina is a remote desktop client written in GTK, aiming to be useful for system administrators and travellers, who need to work with lots of remote computers in front of either large or tiny screens. Remmina supports multiple network protocols, in an integrated and consistent user interface.|
+| retroarch | ghcr.io/thelamer/proot-apps:retroarch | linux/amd64,linux/arm64 | RetroArch is a free and open-source, cross-platform frontend for emulators, game engines, video games, media players and other applications.|
+| shortwave | ghcr.io/thelamer/proot-apps:shortwave | linux/amd64,linux/arm64 | Shortwave is an internet radio player that provides access to a station database with over 30,000 stations.|
+| shotcut | ghcr.io/thelamer/proot-apps:shotcut | linux/amd64,linux/arm64 | Shotcut is a free, open source, cross-platform video editor.|
+| sqlitebrowser | ghcr.io/thelamer/proot-apps:sqlitebrowser | linux/amd64,linux/arm64 | DB Browser for SQLite is a high quality, visual, open source tool to create, design, and edit database files compatible with SQLite.|
+| telegram | ghcr.io/thelamer/proot-apps:telegram | linux/amd64,linux/arm64 | Telegram is a cloud-based mobile and desktop messaging app with a focus on security and speed.|
+| thunderbird | ghcr.io/thelamer/proot-apps:thunderbird | linux/amd64,linux/arm64 | Thunderbird is free and open-source email client software which also functions as a full personal information manager with a calendar and contactbook, as well as an RSS feed reader, chat client (IRC/XMPP/Matrix), and news client.|
+| torbrowser | ghcr.io/thelamer/proot-apps:torbrowser | linux/amd64 | Tor is free and open-source software for enabling anonymous communication by directing Internet traffic through a free, worldwide, volunteer overlay network.|
+| vivaldi | ghcr.io/thelamer/proot-apps:vivaldi | linux/amd64,linux/arm64 | Vivaldi is a freeware, cross-platform web browser with a built-in email client developed by Vivaldi Technologies.|
+| vlc | ghcr.io/thelamer/proot-apps:vlc | linux/amd64,linux/arm64 | VLC media player (previously the VideoLAN Client and commonly known as simply VLC) is a free and open-source, portable, cross-platform media player software and streaming media server developed by the VideoLAN project.|
+| vscode | ghcr.io/thelamer/proot-apps:vscode | linux/amd64,linux/arm64 | Visual Studio Code is a source-code editor developed by Microsoft for Windows, Linux and macOS|
+| vscodium | ghcr.io/thelamer/proot-apps:vscodium | linux/amd64,linux/arm64 | VSCodium is a community-driven, freely-licensed binary distribution of Microsoft’s editor VS Code.|
+| weather | ghcr.io/thelamer/proot-apps:weather | linux/amd64,linux/arm64 | A small application that allows you to monitor the current weather conditions for your city, or anywhere in the world.|
+| webcord | ghcr.io/thelamer/proot-apps:webcord | linux/amd64,linux/arm64 | WebCord can be summarized as a pack of security and privacy hardenings, Discord features reimplementations, Electron / Chromium / Discord bugs workarounds, stylesheets, internal pages and wrapped https://discord.com page, designed to conform with ToS as much as it is possible.|
+| yandex | ghcr.io/thelamer/proot-apps:yandex | linux/amd64 | Yandex Browser is a freeware web browser developed by the Russian technology corporation Yandex that uses the Blink web browser.|
+| zoom | ghcr.io/thelamer/proot-apps:zoom | linux/amd64 | Zoom is a proprietary videotelephony software program developed by Zoom Video Communications.|
+| zotero | ghcr.io/thelamer/proot-apps:zotero | linux/amd64 | Zotero is a free, easy-to-use tool to help you collect, organize, annotate, cite, and share research.|
 
 
 # For Developers
